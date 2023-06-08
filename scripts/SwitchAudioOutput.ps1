@@ -3,11 +3,16 @@
 #       -WindowStyle hidden
 
 # Import module if not installs it: https://github.com/frgnca/AudioDeviceCmdlets 
-# Install-PackageProvider NuGet -Force
-# Set-PSRepository PSGallery -InstallationPolicy Trusted
-# Install-Module -Name AudioDeviceCmdlets -Repository PSGallery -Force
+try{
+   Import-Module -Name AudioDeviceCmdlets   
+}
+catch {
+   Install-PackageProvider NuGet -Force
+   Set-PSRepository PSGallery -InstallationPolicy Trusted
+   Install-Module -Name AudioDeviceCmdlets -Repository PSGallery -Force
+   Import-Module -Name AudioDeviceCmdlets
+}
 
-Import-Module -Name AudioDeviceCmdlets
 
 $listOfAudioOutput = $(Get-AudioDevice -list | Where-Object { $_.Type -eq "Playback" })
 $currentAudioOutput = $(Get-AudioDevice -playback)
